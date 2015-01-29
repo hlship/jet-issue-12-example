@@ -18,5 +18,3 @@
   (jet/run-jetty {:join? false
                   :port 8080
                   :ring-handler async-handler}))
-
-`

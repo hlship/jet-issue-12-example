@@ -1,0 +1,25 @@
+In window 1:
+
+   lein run
+
+
+In window 2:
+
+   Run ab
+
+$ ab -c 20 -k -t 10 -s 60 localhost:8080/hello
+This is ApacheBench, Version 2.3 <$Revision: 1554214 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost (be patient)
+Completed 5000 requests
+Completed 10000 requests
+Completed 15000 requests
+apr_socket_recv: Operation timed out (60)
+Total of 16375 requests completed
+
+
+I often see a large pause after 16000-ish requests, then a timeout failure (as above).  Increasing the timeout value (-s)
+doesn't seem to help. The server is simply unresponsive for some amount of time. This doesn't seem to be
+affected by the concurrency (-c) value, or keep alive (-k).

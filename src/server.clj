@@ -1,7 +1,7 @@
 (ns server
   (:require logging-setup
             [qbits.jet.server :as jet]
-            [clojure.core.async :refer [thread]]
+            [clojure.core.async :refer [thread <!]]
             [io.aviso.rook.async :as a]
             [io.aviso.rook.server :as s]
             [ring.util.response :as r]
@@ -9,16 +9,20 @@
 
 (defn core-handler [request]
   (l/info "core-handler" (:request-method request) (:uri request))
-  (r/response (select-keys request [:request-method :uri])))
+  (Thread/sleep 10)
+  ;; Build a medium-sized buffer (I suspect that too small a response will not trigger the issue).
+  (-> (range 1 2000)
+      r/response))
 
 ;; Test with:
-;;   ab -c 20 -k -t 10 localhost:8080/hello
+;;   http localhost:8080/hello --timeout .1
+;;
+;; That's httpie -- http://httpie.org
 
 (defn launch
   []
   (let [handler (-> core-handler
                     a/ring-handler->async-handler
-                    (s/wrap-with-timeout 100)
                     a/wrap-with-standard-middleware)]
     (jet/run-jetty {:join?        false
                     :port         8080

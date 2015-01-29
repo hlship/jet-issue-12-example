@@ -7,8 +7,9 @@
 
 (defn async-handler
   [request]
-  (l/info "async-handler" (:request-method request) (:uri request))
-  (thread (r/response "OK")))
+  (thread
+    (l/info "async-handler" (:request-method request) (:uri request))
+    (r/response "OK")))
 
 ;; Test with:
 ;;   ab -c 20 -k -t 10 localhost:8080/hello

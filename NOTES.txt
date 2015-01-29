@@ -74,4 +74,4 @@ clojure.core.async.impl.channels.ManyToManyChannel/fn             channels.clj: 
                                  java.lang.Thread.run              Thread.java:  724
 
 
-... at the second exception repeats at about 30 second intervals.
+... and the second exception repeats at about 30 second intervals.
